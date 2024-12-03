@@ -1,0 +1,34 @@
+```{r}
+data <- read.csv("YourCSVHere.csv")
+```
+
+```{r}
+# Basic plot of pitch movement with an ellipse
+ggplot(data, aes(x = pitcher_break_x, y = pitcher_break_z_induced)) +
+  geom_point(aes(color = "CH"), na.rm = TRUE, alpha = .9, size = 2.5) + # scatterplot
+  scale_x_continuous(limits = c(-25, 25), breaks = seq(-20, 20, 5)) + # x-axis limits and ticks
+  scale_y_continuous(limits = c(-25, 25), breaks = seq(-20, 20, 5)) + # y-axis limits and ticks
+  scale_color_manual(values = pitch_colors) +
+  geom_hline(yintercept = 0, linetype = 2) + # dashed horizontal line at y = 0
+  geom_vline(xintercept = 0, linetype = 2) + # dashed vertical line at x = 0
+  stat_ellipse(aes(color = "CH"), # Add ellipse around pitch types
+              type = "norm", # "norm" specifies a normal distribution ellipse
+               level = 0.95, # 95% confidence interval for the ellipse
+               linetype = "solid", # solid line for the ellipse
+               size = 0.5, # size of the ellipse line
+               alpha = 0.1, # transparency of the fill (0 = fully transparent, 1 = fully opaque)
+               geom = "polygon") + # use polygon to fill the ellipse
+  theme_bw(base_size = 15) + # theme for the plot
+  labs(title = "MLB RHP CH Movement Plot", 
+       x = "Horizontal Break (inches)", 
+       y = "Induced Vertical Break (inches)", 
+       color = "Pitch Type", 
+       size = "Velocity (mph)") +
+  theme( # Adjust title and legend position
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 15),
+    legend.position = "right",
+    legend.text = element_text(size = 12)
+  ) +
+  coord_fixed() + # fixed aspect ratio
+  guides(color = guide_legend(override.aes = list(size = 3)))
+```
