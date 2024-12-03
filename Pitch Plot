@@ -1,0 +1,48 @@
+```{r}
+# set colors for pitches
+# this will allow us to have custom and standard colors for all pitch types
+pitches = c("Fastball", 
+            "Sinker", 
+            "Cutter",
+            "Curveball",
+            "Slider",
+            "ChangeUp",
+            "Splitter")
+
+pitch_colors = c("Fastball" = "#FF007D",
+                  "Sinker" = "#98165D",
+                  "Cutter" = "#BE5FA0",
+                  "Curveball" = "#3025CE",
+                  "Slider" = "#67E18D",
+                  "ChangeUp" = "#F79E70",
+                  "Splitter" = "#FE6100")
+```
+
+```{r}
+# Load the pitch movement data
+pitch_data <- read.csv("YourCSVHere.csv")
+```
+
+```{r}
+# Basic plot of pitch movement
+ggplot(pitch_data, aes(x = horzbreak, y = inducedvertbreak)) +
+  geom_point(aes(color = taggedpitchtype), na.rm = TRUE, alpha = .9, size = 2.5) + # make a scatterplot, alpha controls the transparency of the points
+                  scale_x_continuous(limits = c(-20, 20), breaks = seq(-20, 20, 5)) + # set limits of the scale and have ticks every 5
+                  scale_y_continuous(limits = c(-20, 20), breaks = seq(-20, 20, 5)) +
+                  scale_color_manual(values = pitch_colors) + # color the points by the pitch colors set earlier
+                  geom_hline(yintercept = 0, linetype = 2) + # these two lines create dashed lines at the intercepts
+                  geom_vline(xintercept = 0, linetype = 2) + 
+                  theme_bw(base_size = 15) + # sets the plot theme, base_size should always be used! increases the size of text and other visual aids
+  labs(title = "FirstName LastName Movement Plot", 
+       x = "Horizontal Break (inches)", 
+       y = "Induced Vertical Break (inches)", 
+       color = "Pitch Type", 
+       size = "Velocity (mph)") +
+  theme( # center the title, put the legend on the right of the graph and increase the text size of the legend
+                        plot.title = element_text(hjust = 0.5, face = "bold", size = "15"),
+                        legend.position = "right",
+                        legend.text = element_text(size = 12)
+                  ) +
+                  coord_fixed() + # this makes it the so the plot will always have the same dimensions and won't shift around by each pitcher
+                  guides(color = guide_legend(override.aes = list(size = 3))) # this line makes the dots in the legend larger so they're more readable
+```
