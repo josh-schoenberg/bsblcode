@@ -1,10 +1,10 @@
 ```{r}
 # Load the pitch movement data
-pitch_data <- read.csv("Eli_Herst_2024.csv")
+pitch_data <- read.csv("YourCSV1.csv")
 
-rhp_data <- read.csv("RHP_CH.csv")
+ch_data <- read.csv("YourCSV2.csv")
 
-sweeper_data <- read.csv("rhp_sweepers.csv")
+sweeper_data <- read.csv("YourCSV3.csv")
 ```
 
 ```{r}
@@ -17,7 +17,7 @@ ggplot(pitch_data, aes(x = horzbreak, y = inducedvertbreak)) +
   geom_hline(yintercept = 0, linetype = 2) + # Dashed horizontal line at y = 0
   geom_vline(xintercept = 0, linetype = 2) + # Dashed vertical line at x = 0
   theme_bw(base_size = 15) + # Set theme
-  labs(title = "Eli Herst 2024 Movement Plot", 
+  labs(title = "FirstName LastName 2024 Movement Plot", 
        x = "Horizontal Break (inches)", 
        y = "Induced Vertical Break (inches)", 
        color = "Pitch Type"
@@ -31,7 +31,7 @@ ggplot(pitch_data, aes(x = horzbreak, y = inducedvertbreak)) +
   guides(color = guide_legend(override.aes = list(size = 3))) + # Larger points in legend
 
 
- # Add an ellipse around "Changeup" pitches
+ # Add an ellipse around "Sweeper" pitches
   stat_ellipse(data = subset(sweeper_data), 
                 aes(x = horzbreak, y = inducedvertbreak), 
                 color = "#67E18D", 
@@ -41,7 +41,7 @@ ggplot(pitch_data, aes(x = horzbreak, y = inducedvertbreak)) +
                geom = "polygon") +
 
   # Add an ellipse around "Changeup" pitches
-  stat_ellipse(data = subset(rhp_data), 
+  stat_ellipse(data = subset(ch_data), 
                 aes(x = pitcher_break_x, y = pitcher_break_z_induced), 
                 color = "#F79E70", 
                linetype = "dotted", # solid line for the ellipse 
